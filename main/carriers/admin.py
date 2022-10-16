@@ -1,5 +1,5 @@
 from django.contrib import admin
-from carriers.models import Carrier, Car
+from .models import Carrier, Car, Driver
 
 
 # admin.site.register(Carrier)
@@ -13,3 +13,9 @@ class CarriersAdmin(admin.ModelAdmin):
 class CarAdmin(admin.ModelAdmin):
     list_display = ['brand_car', 'type_car']
     prepopulated_fields = {'slug': ('brand_car',)}
+
+
+@admin.register(Driver)
+class DriverAdmin(admin.ModelAdmin):
+    list_display = ['fio_driver', 'phone_driver']
+    prepopulated_fields = {'slug': ('fio_driver',)}

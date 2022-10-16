@@ -6,7 +6,7 @@ from datetime import date
 
 
 class Carrier(models.Model):
-    """Модель Перевозчик"""
+    """Модель Перевозчика"""
 
     # models.BooleanField(default=True, verbose_name='Наличие слота для карты SD')
     organisation = models.CharField(
@@ -120,7 +120,7 @@ class Carrier(models.Model):
         max_length=20,
         null=True,
         help_text='Введите номер контактного телефона',
-        verbose_name='Кор/сч',
+        verbose_name='Номер контактного телефона',
     )
 
     email_contact_person = models.CharField(
@@ -213,8 +213,6 @@ class Car(models.Model):
         verbose_name='Цвет ТС',
     )
 
-    # driver = ....
-
     # End tyagach
 
     # polupricep
@@ -270,6 +268,44 @@ class Car(models.Model):
 
     # End polupricep
 
+    def __str__(self):
+        return self.brand_car
+
 
 class Driver(models.Model):
-    pass
+    """ Модель Водителя """
+
+    # foto
+    # pasport(seriya, number, kem_vidan, date_vidachi, kod_podrazdeleniya)
+    # voditelskoe_udostoverenie(seriya, number, kem_vidan, date_vidachi, date_okonchaniya_deistviya)
+
+    slug = models.SlugField(
+        max_length=50,
+        null=True,
+        help_text='Сделать автоматическим',
+        verbose_name='Слаг',
+    )
+
+    fio_driver = models.CharField(
+        max_length=100,
+        null=True,
+        help_text='Введите ФИО',
+        verbose_name='Фамилия Имя Отчество',
+    )
+
+    phone_driver = models.CharField(
+        max_length=20,
+        null=True,
+        help_text='Введите номер контактного телефона',
+        verbose_name='Номер контактного телефона',
+    )
+
+    email_driver = models.CharField(
+        max_length=100,
+        null=True,
+        help_text='Введите адрес электронной почты',
+        verbose_name='Email',
+    )
+
+    def __str__(self):
+        return self.fio_driver
