@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import path, re_path
-from .views import CarrierListView
+
+from . import views
 
 app_name = 'carriers'
 urlpatterns = [
-    path('', CarrierListView.as_view(), name='index'),
+    path('', views.index, name='index'),
 ]
 
 # urlpatterns = [

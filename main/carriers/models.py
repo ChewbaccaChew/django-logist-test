@@ -1,311 +1,168 @@
 from django.db import models
-from django.urls import reverse
-from django.contrib.auth.models import User
 
-from datetime import date
+
+class OrganizationalForm(models.Model):
+    """Модель - ОПФ"""
+
+    name = models.CharField(max_length=10, help_text='Введите организационно-правовую форму', verbose_name='ОПФ')
+
+    def __str__(self):
+        return self.name
+
+
+class CarrierType(models.Model):
+    """Модель - Тип перевозчика"""
+
+    name = models.CharField(max_length=50, verbose_name='Тип перевозчика')
+
+    def __str__(self):
+        return self.name
 
 
 class Carrier(models.Model):
-    """Модель Перевозчика"""
+    """Модель - Перевозчик"""
 
-    # models.BooleanField(default=True, verbose_name='Наличие слота для карты SD')
-    organisation = models.CharField(
-        max_length=200,
-        help_text='Введите название организации',
-        verbose_name='Название',
-    )
+    class Meta:
+        verbose_name_plural = 'Перевозчики'
+        verbose_name = 'Перевозчикa'
+        ordering = ['name_org']
 
-    form = [
-        ('IPBUL', 'ИПБОЮЛ'),
-        ('OOO', 'ООО'),
-        ('OAO', 'ОАО'),
-        ('ZAO', '3АО'),
-        ('FIZIK', 'ФИЗЛИЦО'),
-    ]
-
-    op_form = models.CharField(
-        max_length=10,
-        choices=form,
-        null=True,
-        help_text='Организационно-правовая форма',
-        verbose_name='ОПФ',
-    )
-
-    slug = models.SlugField(
-        max_length=50,
-        help_text='Сделать автоматическим',
-        verbose_name='Слаг',
-    )
-
-    phone_org = models.CharField(
-        max_length=20,
-        null=True,
-        help_text='Введите основной номер телефона',
-        verbose_name='Номер телефона',
-    )
-
-    email = models.CharField(
-        max_length=100,
-        null=True,
-        help_text='Введите адрес электронной почты',
-        verbose_name='Email',
-    )
-
-    type = [
-        ('PEREVOZ', 'ПЕРЕВОЗЧИК'),
-        ('EKS_PEREVOZ', 'ЭКСПЕДИТОР-ПЕРЕВОЗЧИК'),
-        ('EKS', 'ЭКСПЕДИТОР'),
-        ('OWNER', 'ГРУЗОВЛАДЕЛЕЦ'),
-        ('OTPRAV', 'ГРУЗООТПРАВИТЕЛЬ'),
-        ('POLUCH', 'ГРУЗОПОЛУЧАТЕЛЬ'),
-        ('OTHER_TYPE', 'ДРУГОЙ ВАРИАНТ'),
-    ]
-
-    carrier_type = models.CharField(
-        max_length=50,
-        choices=type,
-        null=True, blank=True,
-        help_text='Введите тип перевозчика',
-        verbose_name='Тип перевозчика',
-    )
-
-    # bank_info
-    inn = models.CharField(
-        max_length=100,
-        help_text='Введите номер ИНН',
-        verbose_name='ИНН расшифровать',
-    )
-
-    ogrn = models.CharField(
-        max_length=100,
-        help_text='Введите номер ОГРН',
-        verbose_name='ОГРН расшифровать',
-    )
-
-    kpp = models.CharField(
-        max_length=100,
-        help_text='Введите номер КПП',
-        verbose_name='КПП расшифровать',
-    )
-
-    bank_name = models.CharField(
-        max_length=100,
-        help_text='Введите название банка',
-        verbose_name='Банк',
-    )
-
-    ras_sch = models.CharField(
-        max_length=100,
-        help_text='Введите номер расчетного счета',
-        verbose_name='Р/сч',
-    )
-
-    cor_sch = models.CharField(
-        max_length=100,
-        help_text='Введите номер корпоративного счета',
-        verbose_name='Кор/сч',
-    )
-
-    # End bank_info
+    name_org = models.CharField(max_length=200, verbose_name='Название организации')
+    org_form = models.ForeignKey('OrganizationalForm', null=True, verbose_name='ОПФ', on_delete=models.CASCADE)
+    carriers_type = models.ForeignKey('CarrierType', null=True, verbose_name='Тип перевозчика', on_delete=models.CASCADE)
+    phone_org = models.CharField(max_length=20, verbose_name='Номер телефона')
+    email_org = models.CharField(max_length=100, verbose_name='Email')
 
     # contact_person
-    fio = models.CharField(
-        max_length=100,
-        null=True,
-        help_text='Введите ФИО',
-        verbose_name='Фамилия Имя Отчество',
-    )
+    first_name_cp = models.CharField(max_length=100, help_text='Введите имя контактного лица', verbose_name='Имя')
+    middle_name_cp = models.CharField(max_length=100, verbose_name='Отчество')
+    last_name_cp = models.CharField(max_length=100, verbose_name='Фамилия')
+    phone_cp = models.CharField(max_length=20, verbose_name='Контактный телефон')
+    email_cp = models.CharField(max_length=100, verbose_name='Email')
+    position_cp = models.CharField(max_length=100, help_text='Введите должность контактного лица', verbose_name='Должность')
 
-    phone_contact_person = models.CharField(
-        max_length=20,
-        null=True,
-        help_text='Введите номер контактного телефона',
-        verbose_name='Номер контактного телефона',
-    )
-
-    email_contact_person = models.CharField(
-        max_length=100,
-        null=True,
-        help_text='Введите адрес электронной почты',
-        verbose_name='Email',
-    )
-
-    position = models.CharField(
-        max_length=100,
-        null=True,
-        help_text='Введите должность',
-        verbose_name='Должность',
-    )
-
-    # End contact_person
+    # bank_info
+    inn = models.CharField(max_length=100, help_text='ИНН расшифровать', verbose_name='ИНН')
+    ogrn = models.CharField(max_length=100, help_text='ОГРН расшифровать', verbose_name='ОГРН')
+    kpp = models.CharField(max_length=100, help_text='КПП расшифровать', verbose_name='КПП')
+    name_bank = models.CharField(max_length=100, help_text='Введите название банка', verbose_name='Банк')
+    ras_sch = models.CharField(max_length=100, help_text='Введите номер расчетного счета', verbose_name='Р/сч')
+    cor_sch = models.CharField(max_length=100, help_text='Введите номер корпоративного счета', verbose_name='Кор/сч')
 
     def __str__(self):
-        return self.organisation
+        return self.name_org
 
 
-class Car(models.Model):
-    """Модель Транспортного средства (ТС)"""
+class WheelFormula(models.Model):
+    """Модель - Колесная формула"""
 
-    # tyagach
-    brand_car = models.CharField(
-        max_length=100,
-        help_text='Введите марку ТС',
-        verbose_name='Марка Транспортного Средства',
-    )
-
-    slug = models.SlugField(
-        max_length=50,
-        null=True,
-        help_text='Сделать автоматическим',
-        verbose_name='Слаг',
-    )
-
-    state_number = models.CharField(
-        max_length=10,
-        help_text='Введите государственный номер ТС',
-        verbose_name='Гос/номер ТС',
-    )
-
-    vin_number = models.CharField(
-        max_length=50,
-        help_text='Введите VIN номер ТС',
-        verbose_name='VIN/номер ТС',
-    )
-
-    formula = [
-        ('2', '2x2'),
-        ('4', '4x4'),
-        ('8', '8x8'),
-    ]
-
-    wheel_formula = models.CharField(
-        max_length=50,
-        choices=formula,
-        help_text='Введите VIN номер ТС',
-        verbose_name='VIN/номер ТС',
-    )
-
-    colour_list = [
-        ('RED', 'Красный'),
-        ('WHITE', 'Белый'),
-        ('BLUE', 'Синий'),
-        ('GREEN', 'Зеленый'),
-    ]
-
-    colour = models.CharField(
-        max_length=50,
-        choices=colour_list,
-        help_text='Введите цвет ТС',
-        verbose_name='Цвет ТС',
-    )
-
-    type_car_list = [
-        ('takoi', 'Такой'),
-        ('syakoi', 'Сякой'),
-        ('takoi', 'Такой'),
-        ('syakoi', 'Сякой'),
-    ]
-
-    type_car = models.CharField(
-        max_length=50,
-        choices=type_car_list,
-        help_text='Введите цвет ТС',
-        verbose_name='Цвет ТС',
-    )
-
-    # End tyagach
-
-    # polupricep
-    brand_pricepa = models.CharField(
-        max_length=100,
-        help_text='Введите марку Прицепа',
-        verbose_name='Марка Прицепа',
-    )
-
-    state_number_pricepa = models.CharField(
-        max_length=10,
-        help_text='Введите государственный номер Прицепа',
-        verbose_name='Гос/номер Прицепа',
-    )
-
-    vin_number_pricepa = models.CharField(
-        max_length=50,
-        help_text='Введите VIN номер Прицепа',
-        verbose_name='VIN/номер Прицепа',
-    )
-
-    load_capacity = models.CharField(
-        max_length=10,
-        help_text='Введите грузоподъемность Прицепа',
-        verbose_name='Грузоподъемность Прицепа',
-    )
-
-    bodywork = models.CharField(
-        max_length=20,
-        help_text='Введите габариты кузова',
-        verbose_name='Габариты кузова',
-    )
-
-    body_volume = models.CharField(
-        max_length=10,
-        help_text='Введите объем кузова',
-        verbose_name='Объем кузова',
-    )
-
-    type_pricepa_list = [
-        ('takoi', 'Такой'),
-        ('syakoi', 'Сякой'),
-        ('takoi', 'Такой'),
-        ('syakoi', 'Сякой'),
-    ]
-
-    type_pricepa = models.CharField(
-        max_length=50,
-        choices=type_pricepa_list,
-        help_text='Введите тип Прицепа',
-        verbose_name='Тип Прицепа',
-    )
-
-    # End polupricep
+    name = models.CharField(max_length=10, verbose_name='Колесная формула')
 
     def __str__(self):
-        return self.brand_car
+        return self.name
+
+
+class VehicleColour(models.Model):
+    """Модель - Цвет ТС"""
+
+    name = models.CharField(max_length=50, verbose_name='Цвет ТС')
+
+    def __str__(self):
+        return self.name
+
+
+class VehicleType(models.Model):
+    """Модель - Тип ТС"""
+
+    name = models.CharField(max_length=50, verbose_name='Тип ТС')
+
+    def __str__(self):
+        return self.name
+
+
+class VehicleBrand(models.Model):
+    """Модель - Марка ТС"""
+
+    name_brand = models.CharField(max_length=100, verbose_name='Марка Транспортного Средства')
+    name_model = models.CharField(max_length=100, verbose_name='Модель Транспортного Средства')
+
+    def __str__(self):
+        return self.name_brand, self.name_model
+
+
+class TrailerBrand(models.Model):
+    """Модель - Марка прицепа"""
+
+    name = models.CharField(max_length=100, verbose_name='Марка Прицепа')
+
+    def __str__(self):
+        return self.name
+
+
+class TrailerType(models.Model):
+    """Модель - Тип прицепа"""
+
+    name = models.CharField(max_length=50, verbose_name='Тип Прицепа')
+
+    def __str__(self):
+        return self.name
+
+
+class Vehicle(models.Model):
+    """Модель - Транспортное средство (ТС)"""
+
+    class Meta:
+        verbose_name_plural = 'Транспортные средства'
+        verbose_name = 'Транспортное средство'
+
+    # tractor
+    vehicle_brand = models.ForeignKey('VehicleBrand', null=True, verbose_name='Марка и Модель ТС', on_delete=models.CASCADE)
+    state_number_car = models.CharField(max_length=10, verbose_name='Гос/номер ТС')
+    vin_number_car = models.CharField(max_length=50, verbose_name='VIN/номер ТС')
+    wheel_formula = models.ForeignKey('WheelFormula', null=True, verbose_name='Колесная формула', on_delete=models.CASCADE)
+    vehicle_colour = models.ForeignKey('VehicleColour', null=True, verbose_name='Цвет ТС', on_delete=models.CASCADE)
+    vehicle_type = models.ForeignKey('VehicleType', null=True, verbose_name='Тип ТС', on_delete=models.CASCADE)
+
+    # trailer
+    state_number_trailer = models.CharField(max_length=10, verbose_name='Гос/номер Прицепа')
+    vin_number_trailer = models.CharField(max_length=50, verbose_name='VIN/номер Прицепа')
+    load_capacity = models.CharField(max_length=10, verbose_name='Грузоподъемность Прицепа')
+    body_volume = models.CharField(max_length=10, verbose_name='Объем кузова')
+    bodywork = models.CharField(max_length=20, verbose_name='Габариты кузова')
+    trailer_brand = models.ForeignKey('TrailerBrand', null=True, verbose_name='Марка прицепа', on_delete=models.CASCADE)
+    trailer_type = models.ForeignKey('TrailerType', null=True, verbose_name='Тип прицепа', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.vehicle_brand
 
 
 class Driver(models.Model):
-    """ Модель Водителя """
+    """ Модель Водитель """
 
-    # foto
-    # pasport(seriya, number, kem_vidan, date_vidachi, kod_podrazdeleniya)
-    # voditelskoe_udostoverenie(seriya, number, kem_vidan, date_vidachi, date_okonchaniya_deistviya)
+    class Meta:
+        verbose_name_plural = 'Водители'
+        verbose_name = 'Водителя'
 
-    slug = models.SlugField(
-        max_length=50,
-        null=True,
-        help_text='Сделать автоматическим',
-        verbose_name='Слаг',
-    )
+    # photo =
+    first_name = models.CharField(max_length=100, verbose_name='Имя водителя')
+    middle_name = models.CharField(max_length=100, verbose_name='Отчество')
+    last_name = models.CharField(max_length=100, verbose_name='Фамилия')
+    phone = models.CharField(max_length=20, verbose_name='Контактный телефон')
+    email = models.CharField(max_length=100, verbose_name='Email')
 
-    fio_driver = models.CharField(
-        max_length=100,
-        null=True,
-        help_text='Введите ФИО',
-        verbose_name='Фамилия Имя Отчество',
-    )
+    # passport(серия, номер, кем выдан, дата выдачи, код подразделения)
+    series_passport = models.CharField(max_length=10, verbose_name='Серия паспорта')
+    number_passport = models.CharField(max_length=20, verbose_name='Номер паспорта')
+    issued_by_passport = models.CharField(max_length=200, verbose_name='Кем выдан')
+    date_issue_passport = models.DateField(null=True, blank=True, verbose_name='Дата выдачи')
+    department_code = models.CharField(max_length=20, verbose_name='Код подразделения')
 
-    phone_driver = models.CharField(
-        max_length=20,
-        null=True,
-        help_text='Введите номер контактного телефона',
-        verbose_name='Номер контактного телефона',
-    )
-
-    email_driver = models.CharField(
-        max_length=100,
-        null=True,
-        help_text='Введите адрес электронной почты',
-        verbose_name='Email',
-    )
+    # driver_license(серия, номер, кем выдан, дата выдачи, дата окончания действия)
+    series_driver_license = models.CharField(max_length=10, verbose_name='Серия водительского')
+    number_driver_license = models.CharField(max_length=20, verbose_name='Номер водительского')
+    issued_by_driver_license = models.CharField(max_length=200, verbose_name='Кем выдан')
+    date_issue_driver_license = models.DateField(null=True, blank=True, verbose_name='Дата выдачи')
+    validity_driver_license = models.DateField(null=True, blank=True, verbose_name='Дата окончания действия')
 
     def __str__(self):
-        return self.fio_driver
+        return self.last_name

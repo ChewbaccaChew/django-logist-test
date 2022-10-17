@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная :: Список перевозчиков</title>
+</head>
+<body>
+    <h1>Перевозчики</h1>
+    {% for carrier in carriers %}
+    <div>
+        <h2>{{ carrier.name_org }}</h2>
+        <p>{{ carrier.phone_org }}</p>
+        <p>{{ carrier.email_org }}</p>
+    </div>
+    {% endfor %}
+</body>
+</html>

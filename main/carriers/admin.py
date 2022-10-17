@@ -1,21 +1,67 @@
 from django.contrib import admin
-from .models import Carrier, Car, Driver
+from .models import *
 
 
-# admin.site.register(Carrier)
 @admin.register(Carrier)
-class CarriersAdmin(admin.ModelAdmin):
-    list_display = ['organisation', 'op_form']
-    prepopulated_fields = {'slug': ('organisation',)}
+class CarrierAdmin(admin.ModelAdmin):
+    list_display = ['name_org', 'phone_org', 'email_org']
+    search_fields = ['name_org']  # поиск
+    list_filter = ('name_org',)  # фильтр
+    # list_display_links = ['phone_org']  # ссылка
+
+    fieldsets = (
+        ('Общая информация', {
+            'fields': ('name_org', 'org_form', 'carriers_type', 'phone_org', 'email_org')
+        }),
+        ('Контактное лицо', {
+            'fields': ('first_name_cp', 'middle_name_cp', 'last_name_cp', 'position_cp', 'phone_cp', 'email_cp')
+        }),
+        ('Банковские реквизиты', {
+            'fields': ('inn', 'ogrn', 'kpp', 'name_bank', 'ras_sch', 'cor_sch')
+        }),
+    )
 
 
-@admin.register(Car)
-class CarAdmin(admin.ModelAdmin):
-    list_display = ['brand_car', 'type_car']
-    prepopulated_fields = {'slug': ('brand_car',)}
+@admin.register(Vehicle)
+class VehicleAdmin(admin.ModelAdmin):
+    list_display = ['vehicle_brand', 'wheel_formula', 'vehicle_type', 'trailer_type']
+
+    fieldsets = (
+        ('Тягач', {
+            'fields': ('vehicle_brand', 'wheel_formula', 'vehicle_type',
+                       'vehicle_colour', 'state_number_car', 'vin_number_car')
+        }),
+        ('Прицеп', {
+            'fields': ('trailer_brand', 'trailer_type', 'state_number_trailer', 'vin_number_trailer',
+                       'load_capacity', 'body_volume', 'bodywork')
+        }),
+    )
 
 
 @admin.register(Driver)
 class DriverAdmin(admin.ModelAdmin):
-    list_display = ['fio_driver', 'phone_driver']
-    prepopulated_fields = {'slug': ('fio_driver',)}
+    list_display = ['first_name', 'last_name', 'phone', 'email']
+
+    fieldsets = (
+        ('', {
+            'fields': ('first_name', 'middle_name', 'last_name', 'phone', 'email')
+        }),
+        ('Паспортные данные', {
+            'fields': ('series_passport', 'number_passport', 'issued_by_passport',
+                       'date_issue_passport', 'department_code')
+        }),
+        ('Водительское удостоверение', {
+            'fields': ('series_driver_license', 'number_driver_license', 'issued_by_driver_license',
+                       'date_issue_driver_license', 'validity_driver_license')
+        }),
+    )
+
+
+admin.site.register(OrganizationalForm)
+admin.site.register(CarrierType)
+admin.site.register(WheelFormula)
+admin.site.register(VehicleColour)
+admin.site.register(VehicleType)
+admin.site.register(VehicleBrand)
+admin.site.register(TrailerBrand)
+admin.site.register(TrailerType)
