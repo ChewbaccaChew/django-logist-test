@@ -24,11 +24,11 @@ class CarrierAdmin(admin.ModelAdmin):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ['vehicle_brand', 'wheel_formula', 'vehicle_type', 'trailer_type']
+    list_display = ['vehicle_brand', 'vehicle_model', 'wheel_formula', 'vehicle_type', 'trailer_type']
 
     fieldsets = (
         ('Тягач', {
-            'fields': ('vehicle_brand', 'wheel_formula', 'vehicle_type',
+            'fields': ('vehicle_brand', 'vehicle_model', 'wheel_formula', 'vehicle_type',
                        'vehicle_colour', 'state_number_car', 'vin_number_car')
         }),
         ('Прицеп', {
@@ -62,6 +62,5 @@ admin.site.register(CarrierType)
 admin.site.register(WheelFormula)
 admin.site.register(VehicleColour)
 admin.site.register(VehicleType)
-admin.site.register(VehicleBrand)
 admin.site.register(TrailerBrand)
 admin.site.register(TrailerType)

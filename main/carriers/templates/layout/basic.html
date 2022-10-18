@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Перевозчики{% endblock %} :: Логист</title>
+</head>
+<body>
+    <div>
+        <a href="{% url 'carriers:index' %}">Перевозчики</a>
+        <a href="">Справочная информация</a>
+        <a href="">Профиль</a>
+    </div>
+    <section>
+        {% block content %}
+        {% endblock %}
+    </section>
+</body>
+</html>
