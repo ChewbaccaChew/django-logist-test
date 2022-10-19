@@ -7,6 +7,7 @@ from . import views
 app_name = 'carriers'
 
 urlpatterns = [
+    path('add/', views.CarriersCreateView.as_view(), name='add'),
     path('', views.index, name='index'),
 ]
 
