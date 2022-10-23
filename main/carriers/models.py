@@ -71,6 +71,8 @@ class Driver(models.Model):
         verbose_name_plural = 'Водители'
         verbose_name = 'Водителя'
 
+    carrier = models.ForeignKey('Carrier', null=True, on_delete=models.SET_NULL)
+
     # photo =
     first_name = models.CharField(max_length=100, verbose_name='Имя водителя')
     middle_name = models.CharField(max_length=100, verbose_name='Отчество')
@@ -99,6 +101,8 @@ class Vehicle(models.Model):
     class Meta:
         verbose_name_plural = 'Транспортные средства'
         verbose_name = 'Транспортное средство'
+
+    carrier = models.ForeignKey('Carrier', null=True, on_delete=models.SET_NULL)
 
     # tractor
     vehicle_brand = models.CharField(max_length=100, null=True, verbose_name='Марка ТС')

@@ -28,7 +28,7 @@ class VehicleAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Тягач', {
-            'fields': ('vehicle_brand', 'vehicle_model', 'wheel_formula', 'vehicle_type',
+            'fields': ('carrier', 'vehicle_brand', 'vehicle_model', 'wheel_formula', 'vehicle_type',
                        'vehicle_colour', 'state_number_car', 'vin_number_car')
         }),
         ('Прицеп', {
@@ -44,7 +44,7 @@ class DriverAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('', {
-            'fields': ('first_name', 'middle_name', 'last_name', 'phone', 'email')
+            'fields': ('carrier', 'first_name', 'middle_name', 'last_name', 'phone', 'email')
         }),
         ('Паспортные данные', {
             'fields': ('series_passport', 'number_passport', 'issued_by_passport',
