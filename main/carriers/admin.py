@@ -57,7 +57,7 @@ class DriverAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(OrganizationalForm)
+admin.site.register(OrganizationalType)
 admin.site.register(CarrierType)
 admin.site.register(WheelFormula)
 admin.site.register(VehicleColour)

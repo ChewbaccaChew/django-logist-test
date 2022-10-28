@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class OrganizationalForm(models.Model):
+class OrganizationalType(models.Model):
     """Модель - ОПФ"""
 
     name = models.CharField(max_length=10, help_text='Введите организационно-правовую форму', verbose_name='ОПФ')
@@ -132,7 +132,7 @@ class Carrier(models.Model):
         ordering = ['name_org']
 
     name_org = models.CharField(max_length=200, verbose_name='Название организации')
-    org_form = models.ForeignKey(OrganizationalForm, null=True, verbose_name='ОПФ', on_delete=models.SET_NULL)
+    org_form = models.ForeignKey(OrganizationalType, null=True, verbose_name='ОПФ', on_delete=models.SET_NULL)
     carriers_type = models.ForeignKey(CarrierType, null=True, verbose_name='Тип перевозчика', on_delete=models.SET_NULL)
     phone_org = models.CharField(max_length=20, verbose_name='Номер телефона')
     email_org = models.EmailField(verbose_name='Email')

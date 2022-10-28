@@ -7,7 +7,16 @@ from . import views
 app_name = 'carriers'
 
 urlpatterns = [
-    path('add/', views.CarriersCreateView.as_view(), name='add'),
+    path('add-trailer-type/', views.CreateTrailerTypeView.as_view(), name='add_trailer_type'),
+    path('add-trailer-brand/', views.CreateTrailerBrandView.as_view(), name='add_trailer_brand'),
+    path('add-vehicle-type/', views.CreateVehicleTypeView.as_view(), name='add_vehicle_type'),
+    path('add-vehicle-colour/', views.CreateVehicleColourView.as_view(), name='add_vehicle_colour'),
+    path('add-wheel-formula/', views.CreateWheelFormulaView.as_view(), name='add_wheel_formula'),
+    path('add-carrier-type/', views.CreateCarrierTypeView.as_view(), name='add_carrier_type'),
+    path('add-organizational-type/', views.CreateOrganizationalTypeView.as_view(), name='add_organizational_type'),
+    path('add-driver/', views.CreateDriverView.as_view(), name='add_driver'),
+    path('add-vehicle/', views.CreateVehicleView.as_view(), name='add_vehicle'),
+    path('add-carrier/', views.CreateCarrierView.as_view(), name='add_carrier'),
     path('', views.index, name='index'),
 ]
 

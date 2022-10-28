@@ -1,11 +1,28 @@
 {% extends 'project/basic.html' %}
 
 {% block content %}
-{% for carrier in carriers %}
-<div>
-    <h2>{{ carrier.name_org }}</h2>
-    <p>{{ carrier.phone_org }}</p>
-    <p>{{ carrier.email_org }}</p>
-</div>
-{% endfor %}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Название организации</th>
+            <th scope="col">ОПФ</th>
+            <th scope="col">Тип перевозчика</th>
+            <th scope="col">Номер телефон</th>
+            <th scope="col">Почта</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for carrier in carriers %}
+        <tr>
+            <th scope="row">{{carrier.id}}</th>
+            <td>{{ carrier.name_org }}</td>
+            <td>{{ carrier.org_form }}</td>
+            <td>{{ carrier.carriers_type }}</td>
+            <td>{{ carrier.phone_org }}</td>
+            <td>{{ carrier.email_org }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
