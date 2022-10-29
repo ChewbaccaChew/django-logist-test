@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import path, re_path
+from django.contrib.auth.views import LogoutView
 
 from . import views
 
@@ -17,6 +18,9 @@ urlpatterns = [
     path('add-driver/', views.CreateDriverView.as_view(), name='add_driver'),
     path('add-vehicle/', views.CreateVehicleView.as_view(), name='add_vehicle'),
     path('add-carrier/', views.CreateCarrierView.as_view(), name='add_carrier'),
+    path('registration/', views.RegistrationView.as_view(), name='registration'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page="/"), name='logout'),
     path('', views.index, name='index'),
 ]
 

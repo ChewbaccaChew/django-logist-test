@@ -152,3 +152,6 @@ class Carrier(models.Model):
     name_bank = models.CharField(max_length=100, help_text='Введите название банка', verbose_name='Банк')
     ras_sch = models.CharField(max_length=100, help_text='Введите номер расчетного счета', verbose_name='Р/сч')
     cor_sch = models.CharField(max_length=100, help_text='Введите номер корпоративного счета', verbose_name='Кор/сч')
+
+    def __str__(self):
+        return self.name_org

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     'carriers.apps.CarriersConfig',
+    'wall.apps.WallConfig',
 ]
 
 MIDDLEWARE = [
